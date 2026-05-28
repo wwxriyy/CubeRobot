@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CubeRobot v6.0 - Control Panel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        CubeRobot | Control Panel
+        <div id="status">
+            <div id="status-dot"></div>
+            <span id="status-text">Disconnected</span>
+        </div>
+    </header>
+    <main>
+        <div class="wrapper">
+            <!-- Left Column: Emotions Panel -->
+            <div class="left-column">
+                <div class="container">
+                    <h2>Emotions</h2>
+                    <div class="emotion-selector">
+                        <button id="emotionPrev" class="emotion-nav-btn">&lt;</button>
+                        <span id="currentEmotion" class="current-emotion">Neutral</span>
+                        <button id="emotionNext" class="emotion-nav-btn">&gt;</button>
+                    </div>
+                    <div class="emotion-buttons" id="emotionButtons">
+                        <!-- populated by JS -->
+                    </div>
+                    <div class="control">
+                        <label class="control-label">Eye state</label>
+                        <div class="current-state" id="eyeStateDisplay">Awake</div>
+                    </div>
+
+                    <div class="control">
+                        <div class="anim-row">
+                            <span>Auto mood change</span>
+                            <label class="switch">
+                                <input type="checkbox" id="autoMoodCheckbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="control">
+                        <p class="section-subtitle">Mood change interval (seconds)</p>
+                        <div class="label-row">
+                            <label>Min</label>
+                            <span class="color-value" id="moodMinValue">5</span>
+                        </div>
+                        <input type="range" min="1" max="60" step="1" id="moodMinSlider">
+                        <div class="label-row" style="margin-top: 10px;">
+                            <label>Max</label>
+                            <span class="color-value" id="moodMaxValue">15</span>
+                        </div>
+                        <input type="range" min="1" max="120" step="1" id="moodMaxSlider">
+                    </div>
+                    <div class="control">
+                        <p class="section-subtitle">Blink interval (ms)</p>
+                        <div class="label-row">
+                            <label>Min</label>
+                            <span class="color-value" id="blinkMinValue">2000</span>
+                        </div>
+                        <input type="range" min="500" max="10000" step="100" id="blinkMinSlider">
+                        <div class="label-row" style="margin-top: 10px;">
+                            <label>Max</label>
+                            <span class="color-value" id="blinkMaxValue">6000</span>
+                        </div>
+                        <input type="range" min="500" max="15000" step="100" id="blinkMaxSlider">
+                    </div>
+                    <div class="control">
+                        <p class="section-subtitle">Eye animations</p>
+                        <div class="anim-row">
+                            <span>Levitation</span>
+                            <label class="switch">
+                                <input type="checkbox" id="levitationEnable">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="label-row">
+                            <label>Speed</label>
+                            <span class="color-value" id="levitationSpeedValue">2</span>
+                        </div>
+                        <input type="range" min="1" max="10" id="levitationSpeed">
+                        <div class="label-row">
+                            <label>Amplitude</label>
+                            <span class="color-value" id="levitationAmpValue">3</span>
+                        </div>
+                        <input type="range" min="0" max="10" id="levitationAmp">
+                        <div class="anim-row" style="margin-top: 15px;">
+                            <span>Look around</span>
+                            <label class="switch">
+                                <input type="checkbox" id="lookAroundEnable">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="label-row">
+                            <label>Speed</label>
+                            <span class="color-value" id="lookSpeedValue">3</span>
+                        </div>
+                        <input type="range" min="1" max="10" id="lookSpeed">
+                        <div class="label-row">
+                            <label>Amplitude</label>
+                            <span class="color-value" id="lookAmpValue">5</span>
+                        </div>
+                        <input type="range" min="0" max="15" id="lookAmp">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: FPS + Lighting Control + Light Sensor -->
+            <div class="right-column">
+                <div class="container fps-container">
+                    <h2>System Performance</h2>
+                    <div class="fps-indicator">
+                        <span class="fps-label">FPS:</span>
+                        <span class="fps-value" id="fpsValue">--</span>
+                    </div>
+                    <div class="fps-bar">
+                        <div class="fps-bar-fill" id="fpsBar" style="width: 0%;"></div>
+                    </div>
+                    <div class="fps-thresholds">
+                        <span style="color: #ff5555;">&lt;30</span>
+                        <span style="color: #ffaa00;">30–50</span>
+                        <span style="color: #4caf50;">&gt;50</span>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <h2>Lighting Control</h2>
+                    <div class="control power-control">
+                        <div class="power-left">
+                            <label class="control-label">Power LED</label>
+                            <label class="switch">
+                                <input type="checkbox" id="powerCheckbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="color-preview" id="colorPreview"></div>
+                    </div>
+                    <div class="control">
+                        <label class="control-label">Lighting Mode</label>
+                        <div class="select-wrapper">
+                            <select id="modeSelect">
+                                <option value="manual">Manual</option>
+                                <option value="purplepink">Purple → Pink</option>
+                                <option value="bluecyan">Blue → Cyan</option>
+                                <option value="fade_red">Fade Red</option>
+                                <option value="fade_green">Fade Green</option>
+                                <option value="fade_blue">Fade Blue</option>
+                                <option value="police">Police</option>
+                                <option value="random">Random</option>
+                                <option value="theater">Theater</option>
+                                <option value="color_cycle">Color Cycle</option>
+                                <option value="strobe">Strobe</option>
+                                <option value="fire">Fire</option>
+                                <option value="rainbow">Rainbow</option>
+                                <option value="rainbow_cycle">Rainbow Cycle</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <div class="label-row">
+                            <label>Red</label>
+                            <span class="color-value" id="redValue">0</span>
+                        </div>
+                        <input type="range" min="0" max="255" id="redSlider">
+                    </div>
+                    <div class="control">
+                        <div class="label-row">
+                            <label>Green</label>
+                            <span class="color-value" id="greenValue">0</span>
+                        </div>
+                        <input type="range" min="0" max="255" id="greenSlider">
+                    </div>
+                    <div class="control">
+                        <div class="label-row">
+                            <label>Blue</label>
+                            <span class="color-value" id="blueValue">0</span>
+                        </div>
+                        <input type="range" min="0" max="255" id="blueSlider">
+                    </div>
+                </div>
+
+                <div class="container">
+                    <h2>Light Sensor</h2>
+                    <div class="control ldr-control">
+                        <label class="control-label">Auto sleep</label>
+                        <label class="switch">
+                            <input type="checkbox" id="ldrEnableCheckbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="control">
+                        <div class="label-row">
+                            <label>Dark threshold</label>
+                            <span class="color-value" id="ldrThresholdValue">300</span>
+                        </div>
+                        <input type="range" min="0" max="1023" id="ldrThresholdSlider">
+                    </div>
+                    <div class="control">
+                        <p class="section-subtitle">Current light level</p>
+                        <div class="light-bar-container">
+                            <div class="light-bar" id="lightLevelBar" style="width: 50%;"></div>
+                        </div>
+                        <div class="light-values">
+                            <span id="lightLevelValue">0</span>
+                            <span>1023</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <h2>DHT11 Climate</h2>
+                    <div class="control dht-control">
+                        <label class="control-label">DHT11 on TX</label>
+                        <label class="switch">
+                            <input type="checkbox" id="dhtEnableCheckbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="climate-values">
+                        <div class="climate-item">
+                            <span class="climate-label">Temperature</span>
+                            <span class="climate-value" id="temperatureValue">--.- C</span>
+                        </div>
+                        <div class="climate-item">
+                            <span class="climate-label">Humidity</span>
+                            <span class="climate-value" id="humidityValue">-- %</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container hardware-container">
+                    <h2>Hardware Status</h2>
+                    <div class="hardware-grid">
+                        <div class="hardware-item">
+                            <span>WiFi</span>
+                            <strong id="hwWifi">--</strong>
+                        </div>
+                        <div class="hardware-item">
+                            <span>DHT</span>
+                            <strong id="hwDht">--</strong>
+                        </div>
+                        <div class="hardware-item">
+                            <span>LED</span>
+                            <strong id="hwLed">--</strong>
+                        </div>
+                        <div class="hardware-item">
+                            <span>FPS</span>
+                            <strong id="hwFps">--</strong>
+                        </div>
+                        <div class="hardware-item">
+                            <span>Light</span>
+                            <strong id="hwLight">--</strong>
+                        </div>
+                        <div class="hardware-item">
+                            <span>Uptime</span>
+                            <strong id="hwUptime">--</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <a href="https://instagram.com/wwxriyy" target="_blank" class="social">
+            <img src="img/instagram_logo.png" alt="instagram">
+            <span>@wwxriyy</span>
+        </a>
+        <a href="https://t.me/wwxriyy" target="_blank" class="social">
+            <img src="img/telegram_logo.png" alt="telegram">
+            <span>@wwxriyy</span>
+        </a>
+    </footer>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
+
