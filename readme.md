@@ -94,11 +94,7 @@ Upload the sketch to your ESP8266 or ESP32 board.
 
 ### 5. Open the web panel
 
-Open the IP address shown in the Serial Monitor in your browser.
-
-Example:
-
-    192.168.0.120
+Open the index.html file after connecting the robot to wifi.
 
 You can now control:
 
